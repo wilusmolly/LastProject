@@ -25,17 +25,17 @@ Comments와 관련된 모든 요청을 처리하는
 
 /* 글목록 요청 처리 */
 router.get('/list', function (req, res, next) {
-  var sql="select * from board";   
-  con.execute(sql, function(error,result,fields){
-    if(error){
-      console.log(error);    
-    }else{
+  var sql = "select * from board";
+  con.execute(sql, function (error, result, fields) {
+    if (error) {
+      console.log(error);
+    } else {
       console.log(result);
-      res.render('comments/list', { 
-        rows:result.rows  
+      res.render('comments/list', {
+        rows: result.rows
       });
     }
-  }); 
+  });
 });
 
 
@@ -77,6 +77,30 @@ router.post('/regist', function (req, res, next) {
   });
 
   //res.render('comments/list', { title: '나의 프레임웍 구축 성공' });
+});
+
+
+//글 상세보기 요청 처리 
+router.get('/detail', function (req, res, next) {
+  var board_id = req.query.board_id; //get방식일때..  
+
+  var sql = "select board_id, writer,title,content";
+  sql += " from board where board_id=:1";
+
+  con.execute(sql, [board_id], function (error, result, fields) {
+    if (error) {
+      console.log(error);
+    } else {
+      //상세보기페이지 랜더링하면서, 결과 넘기자..
+      //확장자가 ejs인 파일을 서버에서 실행버림..
+      console.log(result);
+
+      res.render("comments/detail", {
+        row:result.rows[0]
+      });
+    }
+  });
+
 });
 
 
