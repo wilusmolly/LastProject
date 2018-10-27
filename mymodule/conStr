@@ -1,0 +1,7 @@
+var conStr={
+    user:"front",
+    password:"front",
+    connetString:"localhost/XE"
+}
+//사용자 정의 모듈 선언
+module.exports=conStr;
