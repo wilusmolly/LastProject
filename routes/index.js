@@ -25,7 +25,11 @@ Comments와 관련된 모든 요청을 처리하는
 
 /* 글목록 요청 처리 */
 router.get('/list', function (req, res, next) {
-  var sql = "select board_id,writer,title,content, to_date(regdate,'YYYY-MM-DD') as regdate,hit from board";
+  var sql = "select b.board_id,title,writer, regdate, hit ,count(comments_id)";
+  sql+=" from board b left outer join comments c";
+  sql+=" on b.board_id=c.board_id";
+  sql+=" group by b.board_id, title, writer,regdate,hit";
+
   con.execute(sql, function (error, result, fields) {
     if (error) {
       console.log(error);

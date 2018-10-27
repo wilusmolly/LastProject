@@ -50,10 +50,10 @@
         <%var obj=rows[i];%>
         <tr>
             <td>Jill</td>
-            <td><a href="/comments/detail?board_id=<%=obj[0]%>"><%=obj[2]%></a></td>
-            <td><%=obj[1]%></td>
+            <td><a href="/comments/detail?board_id=<%=obj[0]%>"><%=obj[1]%></a>[<%=obj[5]%>]</td>
+            <td><%=obj[2]%></td>
+            <td><%=obj[3]%></td>
             <td><%=obj[4]%></td>
-            <td><%=obj[5]%></td>
         </tr>
         <%}%>
         <tr>
