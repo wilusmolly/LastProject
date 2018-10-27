@@ -25,7 +25,7 @@ Comments와 관련된 모든 요청을 처리하는
 
 /* 글목록 요청 처리 */
 router.get('/list', function (req, res, next) {
-  var sql = "select * from board";
+  var sql = "select board_id,writer,title,content, to_date(regdate,'YYYY-MM-DD') as regdate,hit from board";
   con.execute(sql, function (error, result, fields) {
     if (error) {
       console.log(error);

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {font-family: Arial, Helvetica, sans-serif;}
+* {box-sizing: border-box;}
+
+input[type=text], select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+}
+
+input[type=button] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type=button]:hover {
+    background-color: #45a049;
+}
+
+.container {
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="/javascripts/Comment.js"></script>
+<script>
+    var myApp=angular.module("myApp",[]);
+
+    //$scope : 컨트롤러 범위내에서 사용가능한 변수
+    //$http : angular ajax 객체
+    myApp.controller("detailController", function($scope, $http, $window){
+        //서버에서 전달된 row변수를 이용하여
+        //모델 변수에 채워넣기
+
+        //댓글 등록 함수 정의 
+        $scope.commentsRegist=function(){
+            //댓글 등록!!
+            $http({
+                url:"/cmt/regist",
+                method:"post",
+                data:JSON.stringify({
+                    msg:$scope.msg,
+                    author:$scope.author
+                })
+            }).then(function(success){
+                var comment = new Comment($scope.msg,$scope.author);
+                angular.element("#box").append(comment.wrapper);                                        
+            } , function(error){
+
+            });    
+
+        };
+
+    });
+</script>
+</head>
+
+<body ng-app="myApp" ng-controller="detailController">
+
+    <h3>Contact Form</h3>
+
+    <div class="container" >
+        <form action="/action_page.php">
+            <input type="text" id="fname"  value="{{writer}}">
+            <input type="text" id="lname"  ng-model="title" value="{{title}}">
+            <textarea id="subject" style="height:200px" ng-model="content">{{content}}</textarea>
+            <input type="button" value="Submit" ng-click="regist()">
+        </form>
+    </div>
+    <div>
+        <input type="text" ng-model="msg"/>
+        <input type="text" ng-model="author"/>
+        <input type="button" value="댓글등록" ng-click="commentsRegist()"/>
+    </div>
+    <div id="box"></div>
+
+</body>
+
+</html>
