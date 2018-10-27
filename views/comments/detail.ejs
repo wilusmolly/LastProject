@@ -49,16 +49,20 @@ input[type=button]:hover {
     myApp.controller("detailController", function($scope, $http, $window){
         //서버에서 전달된 row변수를 이용하여
         //모델 변수에 채워넣기
-
+        $scope.writer="<%=row[1]%>";
+        $scope.title="<%=row[2]%>";
+        $scope.content="<%=row[3]%>";
+        
         //댓글 등록 함수 정의 
         $scope.commentsRegist=function(){
             //댓글 등록!!
             $http({
-                url:"/cmt/regist",
+                url:"/comments/cmt/regist",
                 method:"post",
                 data:JSON.stringify({
                     msg:$scope.msg,
-                    author:$scope.author
+                    author:$scope.author,
+                    board_id:<%=row[0]%>
                 })
             }).then(function(success){
                 var comment = new Comment($scope.msg,$scope.author);
@@ -74,18 +78,22 @@ input[type=button]:hover {
 </head>
 
 <body ng-app="myApp" ng-controller="detailController">
+    <input type="hidden" id="writer" value="<%=row[1]%>">
+    <input type="hidden" id="title" value="<%=row[2]%>">
+    <input type="hidden" id="content" value="<%=row[3]%>">
 
     <h3>Contact Form</h3>
 
     <div class="container" >
         <form action="/action_page.php">
-            <input type="text" id="fname"  value="{{writer}}">
-            <input type="text" id="lname"  ng-model="title" value="{{title}}">
-            <textarea id="subject" style="height:200px" ng-model="content">{{content}}</textarea>
+            <input type="text" id="fname"  ng-model="writer">
+            <input type="text" id="lname"  ng-model="title">
+            <textarea id="subject" style="height:200px" ng-model="content"></textarea>
             <input type="button" value="Submit" ng-click="regist()">
         </form>
     </div>
     <div>
+        <input type="hidden" ng-model="board_id"/>
         <input type="text" ng-model="msg"/>
         <input type="text" ng-model="author"/>
         <input type="button" value="댓글등록" ng-click="commentsRegist()"/>

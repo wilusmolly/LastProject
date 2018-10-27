@@ -103,5 +103,17 @@ router.get('/detail', function (req, res, next) {
 
 });
 
+//댓글 등록 
+router.post('/cmt/regist', function (req, res, next) {
+  var msg=req.body.msg;
+  var author=req.body.author;
+  var board_id=req.body.board_id;
+  
+  sql="insert into comments(comments_id,msg,author,board_id)";
+  sql+=" values(seq_comments.nextval ,:1,:2,:3)";
+
+
+
+});
 
 module.exports = router;
