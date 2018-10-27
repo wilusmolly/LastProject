@@ -108,12 +108,26 @@ router.post('/cmt/regist', function (req, res, next) {
   var msg=req.body.msg;
   var author=req.body.author;
   var board_id=req.body.board_id;
-  
+
+  console.log(req.body);
+
   sql="insert into comments(comments_id,msg,author,board_id)";
   sql+=" values(seq_comments.nextval ,:1,:2,:3)";
 
-
-
+  con.execute(sql, [msg,author,board_id] , function(error, result, fields){
+    if(error){
+        console.log(error);
+    }else{
+        console.log(result);
+        if(result.rowsAffected==0){
+          res.writeHead(500,{"Content-Type":"text/json"});
+          res.end(JSON.stringify({result:0}));
+        }else{
+          res.writeHead(200,{"Content-Type":"text/json"});
+          res.end(JSON.stringify({result:1}));
+        }
+    }
+  });
 });
 
 module.exports = router;
